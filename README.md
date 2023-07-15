@@ -136,5 +136,5 @@ $ ./sodash $ setenv NAME Holberton $ unsetenv NAME $ echo $NAME
 $
 
 ## Authors & Copyrights
-Ahmed Eid Goma <ahmedeidgoma333@gmail.com>
+Ahmed Eid Goma <ahmedeidgoma333@gmail.com\n>
 Odurukwe Bob Uchenna <uchennabob@gmail.com>
