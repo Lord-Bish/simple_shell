@@ -9,8 +9,9 @@ void display_prompt() {
 
 void execute_command(char* command) {
     
-    int status;
     char *args[3];
+    char **environ = NULL;
+    int status;
     pid_t pid;
     
     pid = fork();
@@ -22,7 +23,7 @@ void execute_command(char* command) {
         /* Child process */
 	args[0] = command;
 	args[1] = NULL;
-        if (execve(command, args, NULL) == -1) {
+        if (execve(command, args, environ) == -1) {
             printf("./hsh: 1: %s: not found\n", args[0]);
             exit(EXIT_FAILURE);
         }
