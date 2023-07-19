@@ -2,6 +2,8 @@
 
 #define MAX_INPUT_LENGTH 100
 
+extern char **environ;
+
 void display_prompt() {
     printf("($) ");
     fflush(stdout);
@@ -9,12 +11,47 @@ void display_prompt() {
 
 void execute_command(char* command) {
     char *args[3];
-    extern char **environ;
     int status;
     pid_t pid;
+    char* status_str;
+    char* env_val;
+    int exit_status;
+    char* env_var;
 
     if (strcmp(command, "exit") == 0) {
         exit(EXIT_SUCCESS);
+    } else if (strncmp(command, "exit ", 5) == 0) {
+        status_str = command + 5;
+        exit_status = atoi(status_str);
+        exit(exit_status);
+    } else if (strncmp(command, "setenv ", 7) == 0) {
+        env_var = strtok(command + 7, " ");
+        env_val = strtok(NULL, " ");
+        if (env_var != NULL && env_val != NULL) {
+            if (setenv(env_var, env_val, 1) != 0) {
+                fprintf(stderr, "Failed to set environment variable\n");
+            }
+        } else {
+            fprintf(stderr, "Invalid setenv syntax\n");
+        }
+        return;
+    } else if (strncmp(command, "unsetenv ", 9) == 0) {
+        env_var = strtok(command + 9, " ");
+        if (env_var != NULL) {
+            if (unsetenv(env_var) != 0) {
+                fprintf(stderr, "Failed to unset environment variable\n");
+            }
+        } else {
+            fprintf(stderr, "Invalid unsetenv syntax\n");
+        }
+        return;
+    } else if (strcmp(command, "env") == 0) {
+        char **env = environ;
+        while (*env) {
+            printf("%s\n", *env);
+            env++;
+        }
+        return;
     }
 
     pid = fork();
@@ -27,7 +64,7 @@ void execute_command(char* command) {
         args[0] = command;
         args[1] = NULL;
 
-        // Check if the command exists in the PATH
+        /* Check if the command exists in the PATH */
         if (access(command, X_OK) != 0) {
             printf("./hsh: 1: %s: command not found\n", args[0]);
             exit(EXIT_FAILURE);
@@ -50,7 +87,7 @@ int main() {
 
     while (1) {
         display_prompt();
-       
+
         chars_read = getline(&line, &bufsize, stdin);
 
         if (chars_read == -1) {
@@ -73,3 +110,4 @@ int main() {
     free(line);
     exit(EXIT_SUCCESS);
 }
+
