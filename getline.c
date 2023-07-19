@@ -6,7 +6,7 @@ ssize_t custom_getline(char **lineptr, size_t *n) {
     static char buffer[BUFFER_SIZE];
     static size_t buffer_pos = 0;
     static ssize_t bytes_read = 0;
-    ssize_t i = 0;
+    ssize_t i = 0; j = 0;
     ssize_t bytes_to_copy = 0;
     char *new_lineptr;
 
@@ -49,7 +49,7 @@ ssize_t custom_getline(char **lineptr, size_t *n) {
         }
 
         /* Copy the characters from the buffer to the lineptr */
-        for (ssize_t j = 0; j < bytes_to_copy; j++) {
+        for (j = 0; j < bytes_to_copy; j++) {
             (*lineptr)[i++] = buffer[buffer_pos++];
         }
     }

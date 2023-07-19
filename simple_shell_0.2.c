@@ -41,8 +41,8 @@ void execute_command(char* command) {
             exit(EXIT_FAILURE);
         }
 
-        if (execvp(command, args) == -1) {
-            perror("execvp");
+        if (execve(command, args, environ) == -1) {
+            perror("execve");
             exit(EXIT_FAILURE);
         }
     } else {

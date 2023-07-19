@@ -9,4 +9,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
+ssize_t custom_getline(char **lineptr, size_t *n);
+
+
 #endif
