@@ -7,7 +7,7 @@ int main(__attribute__((unused))int ac, __attribute__((unused))char **av){
 	size_t size = 0;
 	char *prompt;
 
-	prompt = "(hbh) ";
+	prompt = "($) ";
 
 	while (1){
 		printf("%s", prompt);

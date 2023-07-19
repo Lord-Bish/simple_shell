@@ -3,7 +3,7 @@
 #define MAX_INPUT_LENGTH 100
 
 void display_prompt() {
-    printf("(hsh) ");
+    printf("($) ");
     fflush(stdout);
 }
 
