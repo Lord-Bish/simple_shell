@@ -23,7 +23,7 @@ void execute_command(char* command) {
         args[0] = command;
         args[1] = NULL;
 
-        // Check if the command exists in the PATH
+        /* Check if the command exists in the PATH */
         if (access(command, X_OK) != 0) {
             printf("./hsh: 1: %s: command not found\n", args[0]);
             exit(EXIT_FAILURE);
