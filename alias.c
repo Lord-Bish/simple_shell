@@ -63,7 +63,8 @@ int execute_command(char* command) {
     char* and_cmd;
     int or_operator;
     char* or_cmd;
-
+    char *alias_command;
+    char *name, *value;
 
     if (strcmp(command, "exit") == 0) {
         exit(EXIT_SUCCESS);
@@ -171,20 +172,14 @@ int execute_command(char* command) {
         }
     }
 
-    return exit_status;
-}
-
-    char *alias_command;
-    char *name, *value;
-
     if (strncmp(command, "alias ", 6) == 0) {
         /* Handle the alias command */
-        *alias_command = (command + 6);
+        alias_command = (command + 6);
 
         if (*alias_command == '\0') {
             /* Print all aliases */
             print_aliases();
-            return exit_status;
+            return (exit_status);
         }
 
         while (*alias_command) {
@@ -218,7 +213,7 @@ int execute_command(char* command) {
             } else {
                 /* Invalid syntax */
                 fprintf(stderr, "Invalid alias syntax\n");
-                return exit_status;
+                return (exit_status);
             }
 	}
     }
