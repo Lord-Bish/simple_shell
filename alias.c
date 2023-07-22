@@ -224,6 +224,8 @@ int main() {
     char *line = NULL;
     size_t bufsize = 0;
     ssize_t chars_read;
+    const char *name = NULL;
+    const char *value = NULL;
 
     while (1) {
         display_prompt();
@@ -244,6 +246,10 @@ int main() {
         /* Remove the trailing newline character */
         line[strcspn(line, "\n")] = '\0';
 
+	add_alias(name, value);
+	print_aliases();
+	free_aliases();
+	get_alias_value(name);
         execute_command(line);
     }
 
