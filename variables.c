@@ -90,7 +90,6 @@ char* replace_variables(const char* command, int exit_status, int shell_pid) {
         }
     }
     result[j] = '\0'; /* Null-terminate the result string */
-    free(result);
     return result;
 }
 
@@ -110,6 +109,7 @@ int execute_command(char* command) {
     char* or_cmd;
     char *alias_command;
     char *name, *value;
+    char* replaced_command;
 
     if (strcmp(command, "exit") == 0) {
         exit(EXIT_SUCCESS);
@@ -205,17 +205,17 @@ int execute_command(char* command) {
         }
     }
         /* Modify the command to replace variables "$?" and "$$" */
-        command = replace_variables(command, exit_status, getpid());
+        replaced_command = replace_variables(command, exit_status, getpid());
 
-        args[0] = command; /* Use the modified command for execution */
+        args[0] = replaced_command; /* Use the modified command for execution */
         args[1] = NULL;
 
-        if (access(command, X_OK) != 0) {
+        if (access(replaced_command, X_OK) != 0) {
             printf("./hsh: 1: %s: command not found\n", args[0]);
             exit_status = 1;
             exit(exit_status);
 
-        if (execve(command, args, environ) == -1) {
+        if (execve(replaced_command, args, environ) == -1) {
             perror("execve");
             exit_status = 1;
             exit(exit_status);
@@ -308,11 +308,17 @@ int main() {
         /* Remove the trailing newline character */
         line[strcspn(line, "\n")] = '\0';
 
+	name = strtok(line, " ");
+	value = strtok(NULL, "'");
+	if (value == NULL){
+		value = strtok(NULL, " ");
+	}
+
 	add_alias(name, value);
 	print_aliases();
-	free_aliases();
 	get_alias_value(name);
         execute_command(line);
+	free_aliases();
     }
 
     free(line);
