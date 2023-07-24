@@ -92,11 +92,9 @@ void excution(char *command, char **args, pid_t pid, int status, char *argv)
 		args[1] = strtok(NULL, " ");
 		args[2] = strtok(NULL, " ");
 		args[3] = strtok(NULL, " ");
+		strcpy(comm, args[0]);
 		if (args[0][0] !=  '/')
-		{
-			strcpy(comm, args[0]);
 			args[0] = strcat(path, args[0]);
-		}
 		if (access(args[0], X_OK) != 0)
 		{
 			printf("%s: 1: %s: command not found\n", argv, comm);
