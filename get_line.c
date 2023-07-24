@@ -2,12 +2,13 @@
 
 #define BUFFER_SIZE 1024
 
-ssize_t custom_getline(char **lineptr, size_t *n) {
-    static char buffer[BUFFER_SIZE];
-    static size_t buffer_pos = 0;
-    static ssize_t bytes_read = 0;
-    ssize_t i = 0; j = 0;
-    ssize_t bytes_to_copy = 0;
+ssize_t custom_getline(char **lineptr, size_t *n)
+{
+	static char buffer[BUFFER_SIZE];
+	static size_t buffer_pos = 0;
+    static size_t bytes_read = 0;
+    size_t i = 0, j = 0;
+    size_t bytes_to_copy = 0;
     char *new_lineptr;
 
     if (*lineptr == NULL || *n == 0) {
@@ -41,7 +42,7 @@ ssize_t custom_getline(char **lineptr, size_t *n) {
         /* Reallocate the buffer if needed */
         if ((*n - 1) <= i) {
             *n *= 2;
-            *new_lineptr = realloc(*lineptr, *n);
+            new_lineptr = realloc(*lineptr, *n);
             if (new_lineptr == NULL) {
                 return (-1);
             }

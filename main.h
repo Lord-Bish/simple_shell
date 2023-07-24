@@ -9,11 +9,17 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
+
+extern char **environ;
+
 ssize_t custom_getline(char **lineptr, size_t *n);
-struct AliasNode {                                          char *name;                                             char *value;                                            struct AliasNode *next;                             };
 void add_alias(const char *name, const char *value);
-void print_aliases();
-void free_aliases();
-char* get_alias_value(const char *name);
+void print_aliases(void);
+void free_aliases(void);
+char *get_alias_value(const char *name);
+void print_env(char **env);
+void _setenv(char *command, char *env_val, char *env_var);
+void _cd(char *command, char *dir);
+void excution(char *command, char **args, pid_t pid, int status, char *argv);
 
 #endif

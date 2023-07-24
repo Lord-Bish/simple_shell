@@ -13,10 +13,6 @@ void execute_command(char* command) {
     int status;
     pid_t pid;
 
-    if (strcmp(command, "exit") == 0) {
-        exit(EXIT_SUCCESS);
-    }
-
     pid = fork();
 
     if (pid == -1) {
@@ -27,7 +23,7 @@ void execute_command(char* command) {
         args[0] = command;
         args[1] = NULL;
 
-        // Check if the command exists in the PATH
+        /* Check if the command exists in the PATH */
         if (access(command, X_OK) != 0) {
             printf("./hsh: 1: %s: command not found\n", args[0]);
             exit(EXIT_FAILURE);
@@ -50,7 +46,7 @@ int main() {
 
     while (1) {
         display_prompt();
-       
+
         chars_read = getline(&line, &bufsize, stdin);
 
         if (chars_read == -1) {
