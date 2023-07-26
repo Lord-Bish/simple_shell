@@ -10,7 +10,6 @@
 #include <sys/stat.h>
 #include <stdbool.h>
 
-extern char **environ;
 
 ssize_t custom_getline(char **lineptr, size_t *n);
 void add_alias(const char *name, const char *value);

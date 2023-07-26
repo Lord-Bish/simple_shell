@@ -89,7 +89,7 @@ void ex(char *command, char **args, pid_t pid, char *argv, int *j, char **env)
 		strcpy(comm, strcat(path, args[0]));
 	else
 		strcpy(comm, args[0]);
-	for (i = 1; i <= 10 && args[i] != NULL; i++)
+	for (i = 1; i <= 10; i++)
 		args[i] = strtok(NULL, " ");
 	if (access(comm, X_OK) != 0)
 	{
@@ -111,6 +111,9 @@ void ex(char *command, char **args, pid_t pid, char *argv, int *j, char **env)
 			free(command);
 			exit(EXIT_FAILURE);
 		}
+		free(command);
+		exit(EXIT_SUCCESS);
+		
 	} else
 	{
 		waitpid(pid, &status, 0);
