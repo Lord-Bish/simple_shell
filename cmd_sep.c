@@ -68,7 +68,7 @@ int main(int argc, char **argv, char **env)
 {
 	size_t bufsize = 0;
 	ssize_t chars_read;
-	char *end, *command, *line;
+	char *end, *command, *line = NULL;
 	int j = 1;
 
 	(void)argc;
@@ -80,16 +80,13 @@ int main(int argc, char **argv, char **env)
 		if (chars_read == -1)
 		{
 			if (feof(stdin))
-			{
-				printf("\n");
 				break;
-			}
 			perror("getline");
 			free(line);
 			exit(EXIT_FAILURE);
 		}
 		line[strcspn(line, "\n")] = '\0';
-		command = strtok(&line[0], ";");
+		command = strtok(line, ";");
 		while (command != NULL)
 		{
 			while (*command == ' ')
