@@ -63,6 +63,7 @@ void _cd(char *command, char *dir)
 		fprintf(stderr, "Failed to change directory\n");
 		return;
 	}
+	setenv("OLDPWD", getenv("PWD"), 1);
 	if (setenv("PWD", getcwd(cwd, 100), 1) != 0)
 	{
 		fprintf(stderr, "Failed to update PWD environment variable\n");
