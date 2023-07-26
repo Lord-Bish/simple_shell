@@ -66,10 +66,9 @@ void execute_command(char *command, char *argv, int *j, char **env)
  */
 int main(int argc, char **argv, char **env)
 {
-	char *line = NULL;
 	size_t bufsize = 0;
 	ssize_t chars_read;
-	char *end, *command;
+	char *end, *command, *line;
 	int j = 1;
 
 	(void)argc;
@@ -81,13 +80,16 @@ int main(int argc, char **argv, char **env)
 		if (chars_read == -1)
 		{
 			if (feof(stdin))
+			{
+				printf("\n");
 				break;
+			}
 			perror("getline");
 			free(line);
 			exit(EXIT_FAILURE);
 		}
 		line[strcspn(line, "\n")] = '\0';
-		command = strtok(line, ";");
+		command = strtok(&line[0], ";");
 		while (command != NULL)
 		{
 			while (*command == ' ')

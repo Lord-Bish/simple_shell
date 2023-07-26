@@ -113,7 +113,6 @@ void ex(char *command, char **args, pid_t pid, char *argv, int *j, char **env)
 		}
 		free(command);
 		exit(EXIT_SUCCESS);
-		
 	} else
 	{
 		waitpid(pid, &status, 0);
