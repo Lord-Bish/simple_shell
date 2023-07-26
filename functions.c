@@ -46,7 +46,7 @@ void _setenv(char *command, char *env_val, char *env_var)
  */
 void _cd(char *command, char *dir)
 {
-	dir = strtok(command + 3, " ");
+	dir = strtok(command + 2, " ");
 	if (dir == NULL || strcmp(dir, "-") == 0)
 	{
 		dir = getenv("HOME");

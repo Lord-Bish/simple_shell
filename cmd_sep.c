@@ -52,7 +52,7 @@ void execute_command(char *command, char *argv, int *j, char **env)
 				fprintf(stderr, "Failed to unset environment variable\n");
 		} else
 			fprintf(stderr, "Invalid unsetenv syntax\n");
-	} else if (strncmp(command, "cd ", 3) == 0)
+	} else if (strncmp(command, "cd", 2) == 0)
 		_cd(command, dir);
 	else if (strcmp(command, "env") == 0)
 		print_env(env);
