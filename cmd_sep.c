@@ -16,11 +16,11 @@ void display_prompt(void)
  * @command: the command line
  * @argv: name of the file
  * @j: error code
+ * @env: pass enviroment
  */
-void execute_command(char *command, char *argv, int *j)
+void execute_command(char *command, char *argv, int *j, char **env)
 {
 	char *args[11];
-	int status;
 	pid_t pid = 5;
 	char *dir = "";
 	char *env_var = "";
@@ -53,17 +53,18 @@ void execute_command(char *command, char *argv, int *j)
 	} else if (strncmp(command, "cd ", 3) == 0)
 		_cd(command, dir);
 	else if (strcmp(command, "env") == 0)
-		print_env(environ);
+		print_env(env);
 	else
-		ex(command, args, pid, &status, argv, j);
+		ex(command, args, pid, argv, j, env);
 }
 /**
  * main - the main program
  * @argc: number of args
  * @argv: array of args
+ * @env: the default env
  * Return: void
  */
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **env)
 {
 	char *line = NULL;
 	size_t bufsize = 0;
@@ -97,7 +98,7 @@ int main(int argc, char **argv)
 				end--;
 			}
 			*(end + 1) = '\0';
-			execute_command(command, argv[0], &j);
+			execute_command(command, argv[0], &j, env);
 			command = strtok(NULL, ";");
 		}
 	}

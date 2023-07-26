@@ -20,6 +20,6 @@ char *get_alias_value(const char *name);
 void print_env(char **env);
 void _setenv(char *command, char *env_val, char *env_var);
 void _cd(char *command, char *dir);
-void ex(char *command, char **args, pid_t pid, int *status, char *argv, int *j);
+void ex(char *command, char **args, pid_t pid, char *argv, int *j, char **env);
 
 #endif

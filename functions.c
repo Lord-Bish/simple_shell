@@ -72,13 +72,14 @@ void _cd(char *command, char *dir)
  * @command: command line with args
  * @args: the args of command
  * @pid: the child and parint forks
- * @status: wait status
  * @argv: the name of the file
  * @j: error code
+ * @env: local env
  */
-void ex(char *command, char **args, pid_t pid, int *status, char *argv, int *j)
+void ex(char *command, char **args, pid_t pid, char *argv, int *j, char **env)
 {
 	int i;
+	int status;
 	char path[50];
 	char comm[50];
 
@@ -104,7 +105,7 @@ void ex(char *command, char **args, pid_t pid, int *status, char *argv, int *j)
 		exit(EXIT_FAILURE);
 	} else if (pid == 0)
 	{
-		if (execve(comm, args, environ) == -1)
+		if (execve(comm, args, env) == -1)
 		{
 			perror("execve");
 			free(command);
@@ -112,6 +113,6 @@ void ex(char *command, char **args, pid_t pid, int *status, char *argv, int *j)
 		}
 	} else
 	{
-		waitpid(pid, status, 0);
+		waitpid(pid, &status, 0);
 	}
 }
