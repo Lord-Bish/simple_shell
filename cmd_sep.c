@@ -15,8 +15,9 @@ void display_prompt(void)
  * execute_command - the function that excute commands
  * @command: the command line
  * @argv: name of the file
+ * @j: error code
  */
-void execute_command(char *command, char *argv)
+void execute_command(char *command, char *argv, int *j)
 {
 	char *args[11];
 	int status = 5;
@@ -50,7 +51,7 @@ void execute_command(char *command, char *argv)
 	else if (strcmp(command, "env") == 0)
 		print_env(environ);
 	else
-		excution(command, args, pid, status, argv);
+		ex(command, args, pid, status, argv, j);
 }
 /**
  * main - the main program
@@ -63,8 +64,8 @@ int main(int argc, char **argv)
 	char *line = NULL;
 	size_t bufsize = 0;
 	ssize_t chars_read;
-	char *end;
-	char *command;
+	char *end, *command;
+	int j = 1;
 
 	(void)argc;
 	while (1)
@@ -94,7 +95,7 @@ int main(int argc, char **argv)
 				end--;
 			}
 			*(end + 1) = '\0';
-			execute_command(command, argv[0]);
+			execute_command(command, argv[0], &j);
 			command = strtok(NULL, ";");
 		}
 	}

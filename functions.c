@@ -68,14 +68,15 @@ void _cd(char *command, char *dir)
 }
 
 /**
- * excution - excute the normal commands
+ * ex - excute the normal commands
  * @command: command line with args
  * @args: the args of command
  * @pid: the child and parint forks
  * @status: wait status
  * @argv: the name of the file
+ * @j: error code
  */
-void excution(char *command, char **args, pid_t pid, int status, char *argv)
+void ex(char *command, char **args, pid_t pid, int status, char *argv, int *j)
 {
 	int i;
 	char path[50];
@@ -91,7 +92,8 @@ void excution(char *command, char **args, pid_t pid, int status, char *argv)
 		args[i] = strtok(NULL, " ");
 	if (access(comm, X_OK) != 0)
 	{
-		printf("%s: 1: %s: command not found\n", argv, args[0]);
+		printf("%s: %i: %s: command not found\n", argv, (*j), args[0]);
+		(*j)++;
 		return;
 	}
 	pid = fork();
