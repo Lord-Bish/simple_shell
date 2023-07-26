@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 	char *line = NULL;
 	size_t bufsize = 0;
 	ssize_t chars_read;
-	char *end , *command;
+	char *end, *command;
 	int j = 1;
 
 	(void)argc;
@@ -80,11 +80,7 @@ int main(int argc, char **argv)
 		if (chars_read == -1)
 		{
 			if (feof(stdin))
-			{
-				if (isatty(STDIN_FILENO))
-					printf("\n");
 				break;
-			}
 			perror("getline");
 			free(line);
 			exit(EXIT_FAILURE);
