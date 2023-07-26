@@ -77,10 +77,23 @@ void _cd(char *command, char *dir)
  */
 void excution(char *command, char **args, pid_t pid, int status, char *argv)
 {
+	int i;
 	char path[50];
 	char comm[50];
 
 	strcpy(path, "/usr/bin/");
+	args[0] = strtok(command, " ");
+	if (args[0][0] != '/')
+		strcpy(comm, strcat(path, args[0]));
+	else
+		strcpy(comm, args[0]);
+	for (i = 1; i <= 10; i++)
+		args[i] = strtok(NULL, " ");
+	if (access(comm, X_OK) != 0)
+	{
+		printf("%s: 1: %s: command not found\n", argv, args[0]);
+		return;
+	}
 	pid = fork();
 	if (pid == -1)
 	{
@@ -88,19 +101,7 @@ void excution(char *command, char **args, pid_t pid, int status, char *argv)
 		exit(EXIT_FAILURE);
 	} else if (pid == 0)
 	{
-		args[0] = strtok(command, " ");
-		args[1] = strtok(NULL, " ");
-		args[2] = strtok(NULL, " ");
-		args[3] = strtok(NULL, " ");
-		strcpy(comm, args[0]);
-		if (args[0][0] !=  '/')
-			args[0] = strcat(path, args[0]);
-		if (access(args[0], X_OK) != 0)
-		{
-			printf("%s: 1: %s: command not found\n", argv, comm);
-			exit(EXIT_FAILURE);
-		}
-		if (execve(args[0], args, environ) == -1)
+		if (execvp(args[0], args) == -1)
 		{
 			perror("execve");
 			exit(EXIT_FAILURE);

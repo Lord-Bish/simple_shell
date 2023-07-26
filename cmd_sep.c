@@ -2,6 +2,7 @@
 
 #define MAX_INPUT_LENGTH 100
 
+
 /**
  * display_prompt - display prompt
  */
@@ -17,7 +18,7 @@ void display_prompt(void)
  */
 void execute_command(char *command, char *argv)
 {
-	char *args[4];
+	char *args[11];
 	int status = 5;
 	pid_t pid = 5;
 	char *dir = "";
@@ -68,7 +69,8 @@ int main(int argc, char **argv)
 	(void)argc;
 	while (1)
 	{
-		display_prompt();
+		if (isatty(STDIN_FILENO))
+			display_prompt();
 		chars_read = getline(&line, &bufsize, stdin);
 		if (chars_read == -1)
 		{
