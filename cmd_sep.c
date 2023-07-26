@@ -70,7 +70,7 @@ int main(int argc, char **argv, char **env)
 {
 	size_t bufsize = 0;
 	ssize_t chars_read;
-	char *end, *command, *line = NULL;
+	char *end, *sav, *command, *line = NULL;
 	int j = 1;
 
 	(void)argc;
@@ -88,7 +88,7 @@ int main(int argc, char **argv, char **env)
 			exit(EXIT_FAILURE);
 		}
 		line[strcspn(line, "\n")] = '\0';
-		command = strtok(line, ";");
+		command = strtok_r(line, ";", &sav);
 		while (command != NULL)
 		{
 			while (*command == ' ')
@@ -102,7 +102,7 @@ int main(int argc, char **argv, char **env)
 			}
 			*(end + 1) = '\0';
 			execute_command(command, argv[0], &j, env);
-			command = strtok(NULL, ";");
+			command = strtok_r(NULL, ";", &sav);
 		}
 	}
 	free(line);
