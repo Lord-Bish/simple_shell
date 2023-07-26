@@ -30,6 +30,8 @@ void execute_command(char *command, char *argv, int *j, char **env)
 
 	if (strcmp(command, "exit") == 0)
 	{
+		if (!isatty(STDIN_FILENO))
+			return;
 		free(command);
 		exit(EXIT_SUCCESS);
 	}
