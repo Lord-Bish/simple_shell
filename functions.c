@@ -46,22 +46,24 @@ void _setenv(char *command, char *env_val, char *env_var)
  */
 void _cd(char *command, char *dir)
 {
-	dir = strtok(command + 2, " ");
-	if (dir == NULL || strcmp(dir, "-") == 0)
-	{
+	char cwd[100];
+
+	dir = strtok(command + 3, " ");
+	if (dir == NULL)
 		dir = getenv("HOME");
-		if (dir == NULL)
-		{
-			fprintf(stderr, "Failed to get home directory\n");
-			return;
-		}
+	else if (strcmp(dir, "-") == 0)
+		dir = getenv("OLDPWD");
+	if (dir == NULL)
+	{
+		fprintf(stderr, "Failed to get directory\n");
+		return;
 	}
 	if (chdir(dir) != 0)
 	{
 		fprintf(stderr, "Failed to change directory\n");
 		return;
 	}
-	if (setenv("PWD", dir, 1) != 0)
+	if (setenv("PWD", getcwd(cwd, 100), 1) != 0)
 	{
 		fprintf(stderr, "Failed to update PWD environment variable\n");
 	}
