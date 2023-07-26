@@ -20,20 +20,24 @@ void display_prompt(void)
 void execute_command(char *command, char *argv, int *j)
 {
 	char *args[11];
-	int status = 5;
+	int status;
 	pid_t pid = 5;
 	char *dir = "";
 	char *env_var = "";
 	char *env_val = "";
 	int exit_status;
-	char *status_str;
+	char *status_str = "";
 
 	if (strcmp(command, "exit") == 0)
+	{
+		free(command);
 		exit(EXIT_SUCCESS);
+	}
 	else if (strncmp(command, "exit ", 5) == 0)
 	{
 		status_str = command + 5;
 		exit_status = atoi(status_str);
+		free(command);
 		exit(exit_status);
 	} else if (strncmp(command, "setenv ", 7) == 0)
 		_setenv(command, env_var, env_val);
@@ -51,7 +55,7 @@ void execute_command(char *command, char *argv, int *j)
 	else if (strcmp(command, "env") == 0)
 		print_env(environ);
 	else
-		ex(command, args, pid, status, argv, j);
+		ex(command, args, pid, &status, argv, j);
 }
 /**
  * main - the main program
@@ -64,7 +68,7 @@ int main(int argc, char **argv)
 	char *line = NULL;
 	size_t bufsize = 0;
 	ssize_t chars_read;
-	char *end, *command;
+	char *end , *command;
 	int j = 1;
 
 	(void)argc;
@@ -81,8 +85,11 @@ int main(int argc, char **argv)
 				break;
 			}
 			perror("getline");
+			free(line);
 			exit(EXIT_FAILURE);
 		}
+		if (chars_read == (ssize_t)-1)
+			break;
 		line[strcspn(line, "\n")] = '\0';
 		command = strtok(line, ";");
 		while (command != NULL)

@@ -76,7 +76,7 @@ void _cd(char *command, char *dir)
  * @argv: the name of the file
  * @j: error code
  */
-void ex(char *command, char **args, pid_t pid, int status, char *argv, int *j)
+void ex(char *command, char **args, pid_t pid, int *status, char *argv, int *j)
 {
 	int i;
 	char path[50];
@@ -88,7 +88,7 @@ void ex(char *command, char **args, pid_t pid, int status, char *argv, int *j)
 		strcpy(comm, strcat(path, args[0]));
 	else
 		strcpy(comm, args[0]);
-	for (i = 1; i <= 10; i++)
+	for (i = 1; i <= 10 && args[i] != NULL; i++)
 		args[i] = strtok(NULL, " ");
 	if (access(comm, X_OK) != 0)
 	{
@@ -100,16 +100,18 @@ void ex(char *command, char **args, pid_t pid, int status, char *argv, int *j)
 	if (pid == -1)
 	{
 		perror("fork");
+		free(command);
 		exit(EXIT_FAILURE);
 	} else if (pid == 0)
 	{
-		if (execvp(args[0], args) == -1)
+		if (execve(comm, args, environ) == -1)
 		{
 			perror("execve");
+			free(command);
 			exit(EXIT_FAILURE);
 		}
 	} else
 	{
-		waitpid(pid, &status, 0);
+		waitpid(pid, status, 0);
 	}
 }
