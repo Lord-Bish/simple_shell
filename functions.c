@@ -97,6 +97,7 @@ void ex(char *command, char **args, pid_t pid, char *argv, int *j, char **env)
 		(*j)++;
 		return;
 	}
+	(void)env;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -105,7 +106,7 @@ void ex(char *command, char **args, pid_t pid, char *argv, int *j, char **env)
 		exit(EXIT_FAILURE);
 	} else if (pid == 0)
 	{
-		if (execve(comm, args, env) == -1)
+		if (execvp(args[0], args) == -1)
 		{
 			perror("execve");
 			free(command);
