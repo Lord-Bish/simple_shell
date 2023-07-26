@@ -81,15 +81,14 @@ int main(int argc, char **argv)
 		{
 			if (feof(stdin))
 			{
-				printf("\n");
+				if (isatty(STDIN_FILENO))
+					printf("\n");
 				break;
 			}
 			perror("getline");
 			free(line);
 			exit(EXIT_FAILURE);
 		}
-		if (chars_read == (ssize_t)-1)
-			break;
 		line[strcspn(line, "\n")] = '\0';
 		command = strtok(line, ";");
 		while (command != NULL)
