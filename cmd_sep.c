@@ -91,6 +91,8 @@ int main(int argc, char **argv, char **env)
 		{
 			while (*command == ' ')
 				command++;
+			if (command[0] == '\0')
+				break;
 			end = command + strlen(command) - 1;
 			while (end > command && *end == ' ')
 			{
